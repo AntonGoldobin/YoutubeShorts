@@ -8,7 +8,7 @@ const options = {
 	url: 'https://tiktok-bulletproof.p.rapidapi.com/user-feed',
 	params: { username: 'betyoucantfollowme1' },
 	headers: {
-		'X-RapidAPI-Key': '3acb5928e3msh33feefc3dd5671dp18984ejsnc114f20aef67',
+		'X-RapidAPI-Key': process.env.TIK_TOK_KEY,
 		'X-RapidAPI-Host': 'tiktok-bulletproof.p.rapidapi.com',
 	},
 }
