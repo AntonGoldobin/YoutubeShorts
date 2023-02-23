@@ -91,7 +91,6 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.post('/youtube-shorts', (req: Request, res: Response) => {
-  console.log(req.body)
 	const shortsConfig: Config = req.body
 	postingBase(shortsConfig)
 	res.send('Job has been started')

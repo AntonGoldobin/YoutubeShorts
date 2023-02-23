@@ -1,8 +1,6 @@
 import { Config, GeneralPost, VideoParams } from '../../types/types'
 const fs = require('fs')
-const readline = require('readline')
 import { google } from 'googleapis'
-const OAuth2 = google.auth.OAuth2
 import path from 'path'
 import { removeVideoContent } from '../../utils'
 import { saveUniquePostId } from '@src/db/models/savePostId'
@@ -41,13 +39,14 @@ export const uploadToYoutube = (
 					defaultLanguage: 'en',
 					defaultAudioLanguage: 'en',
 				},
-				contentDetails: {
-					contentRating: {
-						ytRating: 'ytAgeRestricted',
-					},
-				},
+				// contentDetails: {
+				// 	contentRating: {
+				// 		ytRating: 'ytAgeRestricted',
+				// 	},
+				// },
 				status: {
-					privacyStatus: 'private',
+					privacyStatus:
+						process.env.NODE_ENV === 'development' ? 'private' : 'public',
 				},
 			},
 			media: {
@@ -66,12 +65,7 @@ export const uploadToYoutube = (
 					auth: auth,
 					videoId: response.data.id,
 					media: {
-						//TODO test that and try without "CreateReadStream"
-						body: fs.createReadStream(
-							path.join(
-								'https://images.unsplash.com/photo-1673868298575-34a1a9b4e5c0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-							),
-						),
+						body: fs.createReadStream(videoParams.downloadedThumbnailPath),
 					},
 				},
 				function (err: unknown, response: any) {
@@ -83,7 +77,6 @@ export const uploadToYoutube = (
 					removeVideoContent(videoParams)
 					// Save url to DB for checking in future and ignoring to posting
 					saveUniquePostId(post, config)
-					console.log(response.data)
 				},
 			)
 		},

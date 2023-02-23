@@ -19,12 +19,8 @@ const SCOPES = [
 ]
 
 export const loginToYoutube = (config: Config) => {
-	console.log('login to youtube')
-	console.log(config.youtubeSecret)
-	const keys = config.youtubeSecret
-	// assert(fs.existsSync(videoParams.downloadedFilePath))
 	// Authorize a client with the loaded credentials, then call the YouTube API.
-	return authorize(keys, config)
+	return authorize(config.youtubeSecret, config)
 }
 
 /**
@@ -47,7 +43,6 @@ const authorize = async (keys: any, config: Config) => {
 			console.log('should create a new token')
 			res(getNewToken(oauth2Client, config))
 		} else {
-			console.log(config.youtubeLoginToken)
 			oauth2Client.credentials = config.youtubeLoginToken
 			console.log('Successfully logged in to the youtube account')
 			res(oauth2Client)

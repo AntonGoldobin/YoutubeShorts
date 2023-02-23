@@ -9,7 +9,6 @@ dotenv.config();
 export const saveUniquePostId = (post: GeneralPost, config:Config) => {
   if (post) {
     const SaveIdModel = mongoose.model("model", postIdSchema, `${process.env.NODE_ENV}-${config.channelName}`);
-    console.log('davePostId: ' + post.id)
     const postId = new SaveIdModel({ postId: post.id, createdAt: post.created });
     postId.markModified('model');
 
