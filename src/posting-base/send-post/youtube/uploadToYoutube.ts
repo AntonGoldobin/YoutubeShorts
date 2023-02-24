@@ -1,5 +1,5 @@
 import { Config, GeneralPost, VideoParams } from '../../types/types'
-const fs = require('fs')
+import fs from 'fs'
 import { google } from 'googleapis'
 import path from 'path'
 import { removeVideoContent } from '../../utils'

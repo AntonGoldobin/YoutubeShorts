@@ -15,7 +15,7 @@ const options = {
 
 export const getTikTokPosts = async (config: Config) => {
 	try {
-		const response = await axios.request(options)
+		const response = await axios.get(options.url, {params: options.params})
 		const posts: TikTokPost[] = await response?.data?.feed
 		return posts
 	} catch(err) {

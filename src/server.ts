@@ -61,6 +61,7 @@ app.use(
 		err: Error,
 		_: any,
 		res: any,
+		next: any
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	) => {
 		if (process.env.NODE_ENV !== NodeEnvs.Test) {

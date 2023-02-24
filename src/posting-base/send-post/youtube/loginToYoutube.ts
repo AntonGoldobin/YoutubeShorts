@@ -6,8 +6,8 @@
 
 import { Config } from '../../types/types'
 
-const fs = require('fs')
-const readline = require('readline')
+import fs from 'fs'
+import readline from 'readline'
 import { google } from 'googleapis'
 const OAuth2 = google.auth.OAuth2
 

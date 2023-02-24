@@ -1,7 +1,6 @@
 import { Config } from '../types/types'
 import fs from 'fs'
 
-// const snoowrap = require('snoowrap')
 import snoowrap, {Submission} from 'snoowrap'
 
 export const getRedditPosts = async(config: Config) => {
