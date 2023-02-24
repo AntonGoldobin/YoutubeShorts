@@ -1,7 +1,6 @@
 /**
  * Remove old files, copy front-end ones.
  */
-
 import fs from 'fs-extra';
 import logger from 'jet-logger';
 import childProcess from 'child_process';
@@ -28,7 +27,7 @@ import childProcess from 'child_process';
  * Remove file
  */
 function remove(loc: string): Promise<void> {
-  return new Promise((res, rej) => {
+  return new Promise((res: any, rej: any) => {
     return fs.remove(loc, (err: unknown) => {
       return (!!err ? rej(err) : res());
     });
@@ -39,7 +38,7 @@ function remove(loc: string): Promise<void> {
  * Copy file.
  */
 function copy(src: string, dest: string): Promise<void> {
-  return new Promise((res, rej) => {
+  return new Promise((res: any, rej: any) => {
     return fs.copy(src, dest, (err:unknown) => {
       return (!!err ? rej(err) : res());
     });
@@ -50,7 +49,7 @@ function copy(src: string, dest: string): Promise<void> {
  * Do command line command.
  */
 function exec(cmd: string, loc: string): Promise<void> {
-  return new Promise((res, rej) => {
+  return new Promise((res: any, rej: any) => {
     return childProcess.exec(cmd, {cwd: loc}, (err:unknown, stdout: any, stderr: any) => {
       if (!!stdout) {
         logger.info(stdout);

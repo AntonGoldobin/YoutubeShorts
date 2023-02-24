@@ -7,7 +7,9 @@ import { sendPost } from './send-post/sendPost'
 import { clearDownloadFolder } from './utils'
 import { convertToGeneralPosts } from './posts-manipulations/convertToGeneralPosts'
 
-export const postingBase = async (config: Config) => {
+export const postingBase = async (config: Config | null | undefined) => {
+	if (!config) return
+
 	//Clear all downloaded files
 	clearDownloadFolder()
 

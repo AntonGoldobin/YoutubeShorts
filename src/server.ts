@@ -2,11 +2,11 @@
  * Setup express server.
  */
 
-import cookieParser from 'cookie-parser'
+
 import morgan from 'morgan'
 import path from 'path'
 import helmet from 'helmet'
-import express, { Request, Response, NextFunction } from 'express'
+import express from 'express'
 import logger from 'jet-logger'
 
 import 'express-async-errors'
@@ -59,10 +59,9 @@ app.use(Paths.Base, BaseRouter)
 app.use(
 	(
 		err: Error,
-		_: Request,
-		res: Response,
+		_: any,
+		res: any,
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		next: NextFunction,
 	) => {
 		if (process.env.NODE_ENV !== NodeEnvs.Test) {
 			logger.err(err, true)
@@ -86,11 +85,11 @@ const staticDir = path.join(__dirname, 'public')
 app.use(express.static(staticDir))
 
 // Nav to login pg by default
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (req: any, res: any) => {
 	res.sendFile('login.html', { root: viewsDir })
 })
 
-app.post('/youtube-shorts', (req: Request, res: Response) => {
+app.post('/youtube-shorts', (req: any, res: any) => {
 	const shortsConfig: Config = req.body
 	postingBase(shortsConfig)
 	res.send('Job has been started')
