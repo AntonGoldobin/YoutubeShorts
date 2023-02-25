@@ -8,7 +8,6 @@ export const convertToGeneralPosts = (
 	const postsArray: GeneralPost[] = []
 
 	if (config.contentType === 'reddit') {
-
 		const redditPosts = posts as RedditPost[]
 		redditPosts.map((post: RedditPost) => {
 			//Getting video's ID
@@ -26,7 +25,6 @@ export const convertToGeneralPosts = (
 
 			postsArray.push(currentPost)
 		})
-	} else {
 	}
 
 	return postsArray
@@ -37,9 +35,12 @@ const getRedditMediaUrl = (post: RedditPost) => {
 }
 
 const isVideoCorrect = (post: RedditPost): boolean => {
-	if(!post.is_video) return false
-	const isMobile = post.media.reddit_video.width < post.media.reddit_video.height
+	if (!post.is_video) return false
+	const isMobile =
+		post.media.reddit_video.width < post.media.reddit_video.height
 	const isGif = post.media.reddit_video.is_gif
+	const isShortDuration = post.media.reddit_video.duration > 15
+	const isLongDuration = post.media.reddit_video.duration < 60
 
-	return isMobile && !isGif
+	return isMobile && !isGif && !isLongDuration && !isShortDuration
 }
