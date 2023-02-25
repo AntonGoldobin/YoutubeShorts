@@ -15,16 +15,26 @@ export const postingBase = async (config: Config | null | undefined) => {
 
 	try {
 		//Get posts
-		const posts: TikTokPost[] | RedditPost[] = await getPosts(config)
+		console.log('starts getPosts()')
+		const posts: TikTokPost[] | RedditPost[] | null = await getPosts(config)
+
+		if (!posts) return
+
 		//Convert tiktok and reddit response to general type objects
-		const generalTypePosts: GeneralPost[] = await convertToGeneralPosts(posts, config)
+		console.log('starts convertToGeneral()')
+		const generalTypePosts: GeneralPost[] = convertToGeneralPosts(posts, config)
 		//Filter posts that not included on db yet
-		let uniqPosts: GeneralPost[] = await deleteDuplicates(generalTypePosts, config)
+		console.log('starts deleteDuplicates()')
+		const uniqPosts: GeneralPost[] = await deleteDuplicates(
+			generalTypePosts,
+			config,
+		)
 		//Filter posts by video
-		const uniqVideoPosts = await uniqPosts.filter(post => post.is_video)
+		console.log('starts filter uniqPosts by video')
+		const uniqVideoPosts = uniqPosts.filter((post) => post.is_video)
 		//Send post
 		await sendPost(uniqVideoPosts[0], config)
-	} catch (err) {
-		throw new Error('Golden Antelope: postingBase.ts ' + err)
+	} catch (err: unknown) {
+		throw new Error(err as string)
 	}
 }

@@ -1,11 +1,14 @@
-import { Config } from '../types/types'
+import { Config, RedditPost } from '../types/types'
 import fs from 'fs'
 
-import snoowrap, {Submission} from 'snoowrap'
+import snoowrap from 'snoowrap'
 
-export const getRedditPosts = async(config: Config) => {
+export const getRedditPosts = async (
+	config: Config,
+): Promise<RedditPost[] | null> => {
 	const r = new snoowrap({
 		userAgent:
+			// eslint-disable-next-line max-len
 			'Hello, I need to create this app for my nodejs server for posting images from reddit to my telegram channel',
 		clientId: config.snoowrapClientId,
 		clientSecret: config.snoowrapSecret,
@@ -13,12 +16,19 @@ export const getRedditPosts = async(config: Config) => {
 	})
 
 	try {
-		const posts:Submission[] = await r.getBest({limit: config.redditPostLimit })
-		const resData = await JSON.stringify(posts)
-		await fs.writeFile('src/saved-responses/redditResponse.json', resData, 'utf8', () => console.log('json has been saved'));
-		return await posts
+		const posts: unknown = await r.getBest({
+			limit: config.redditPostLimit,
+		})
+		const resData = JSON.stringify(posts)
+		fs.writeFile(
+			'src/saved-responses/redditResponse.json',
+			resData,
+			'utf8',
+			() => console.log('json has been saved'),
+		)
+		return posts as RedditPost[]
 	} catch (err: unknown) {
-		console.log('GoldenAntelope, getRedditPosts.ts: ' + err)
+		console.log('GoldenAntelope, getRedditPosts.ts: ', err)
+		return null
 	}
 }
-

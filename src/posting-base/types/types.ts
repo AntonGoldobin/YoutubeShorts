@@ -211,3 +211,7 @@ export interface GeneralPost {
 	is_video: boolean
 	audio: string
 }
+
+export interface IRequest {
+	body: Config
+}

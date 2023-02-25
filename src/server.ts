@@ -2,7 +2,6 @@
  * Setup express server.
  */
 
-
 import morgan from 'morgan'
 import path from 'path'
 import helmet from 'helmet'
@@ -19,7 +18,7 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes'
 import { NodeEnvs } from '@src/constants/misc'
 import { RouteError } from '@src/other/classes'
 import mongoose, { ConnectOptions } from 'mongoose'
-import { Config } from './posting-base/types/types'
+import { Config, IRequest } from './posting-base/types/types'
 import { postingBase } from './posting-base/postingBase'
 // **** Variables **** //
 
@@ -28,7 +27,9 @@ const app = express()
 mongoose.set('strictQuery', true)
 
 mongoose.connect(
-	`mongodb+srv://${process.env.MONGODB_AUTH}@cluster0.lyyb5.mongodb.net/youtube-shorts?retryWrites=true&w=majority`,
+	`mongodb+srv://${
+		process.env.MONGODB_AUTH as string
+	}@cluster0.lyyb5.mongodb.net/youtube-shorts?retryWrites=true&w=majority`,
 	{ useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions,
 	function (err) {
 		if (err) return console.log(err)
@@ -61,9 +62,9 @@ app.use(
 		err: Error,
 		_: any,
 		res: any,
-		next: any
+		next: any,
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	) => {
+	): string => {
 		if (process.env.NODE_ENV !== NodeEnvs.Test) {
 			logger.err(err, true)
 		}
@@ -71,7 +72,7 @@ app.use(
 		if (err instanceof RouteError) {
 			status = err.status
 		}
-		return res.status(status).json({ error: err.message })
+		return res.status(status).json({ error: err.message }) as string
 	},
 )
 
@@ -90,7 +91,7 @@ app.get('/', (req: any, res: any) => {
 	res.sendFile('login.html', { root: viewsDir })
 })
 
-app.post('/youtube-shorts', (req: any, res: any) => {
+app.post('/youtube-shorts', (req: IRequest, res: any) => {
 	const shortsConfig: Config = req.body
 	postingBase(shortsConfig)
 	res.send('Job has been started')

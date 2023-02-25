@@ -1,20 +1,22 @@
 import _ from 'lodash'
 import { downloadVideoAndMerge } from './downloadVideoAndMerge'
-import { Config, GeneralPost, VideoParams } from '../types/types'
-import { loginToYoutube} from './youtube/loginToYoutube'
+import { Config, GeneralPost } from '../types/types'
+import { loginToYoutube } from './youtube/loginToYoutube'
 import { uploadToYoutube } from './youtube/uploadToYoutube'
 import { setVideoParams } from './setVideoParams'
 
-
-export const sendPost = async (post: GeneralPost, config: Config) => {
+export const sendPost = async (post: GeneralPost, config: Config) => {	
 	console.log('sendPost()')
 
-	const videoParams = await setVideoParams(post)
+	console.log('starts videoParams()')
+	const videoParams = setVideoParams(post)
 
+	console.log('starts downloadVideoAndMerge()')
 	await downloadVideoAndMerge(post, videoParams)
 
+	console.log('starts loginToYoutube()')
 	const auth = await loginToYoutube(config)
 
-	await uploadToYoutube(auth, config, post, videoParams)
-
+	console.log('startsuploadToYoutube()')
+	uploadToYoutube(auth, config, post, videoParams)
 }

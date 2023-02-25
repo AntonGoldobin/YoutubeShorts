@@ -39,8 +39,8 @@ const isVideoCorrect = (post: RedditPost): boolean => {
 	const isMobile =
 		post.media.reddit_video.width < post.media.reddit_video.height
 	const isGif = post.media.reddit_video.is_gif
-	const isShortDuration = post.media.reddit_video.duration > 15
-	const isLongDuration = post.media.reddit_video.duration < 60
+	const isShortDuration = post.media.reddit_video.duration < 15
+	const isLongDuration = post.media.reddit_video.duration > 60
 
 	return isMobile && !isGif && !isLongDuration && !isShortDuration
 }
