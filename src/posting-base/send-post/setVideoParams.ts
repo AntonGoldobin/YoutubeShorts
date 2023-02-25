@@ -1,7 +1,8 @@
-import { GeneralPost, VideoParams } from "../types/types"
-import path  from 'path'
+import { GeneralPost, VideoParams } from '../types/types'
+import path from 'path'
 
 export const setVideoParams = (post: GeneralPost): VideoParams => {
+
 	//Video params
 	const fileName = `${post.id}.mp4`
 	const filePath = `../downloaded-files/${fileName}`
@@ -12,9 +13,11 @@ export const setVideoParams = (post: GeneralPost): VideoParams => {
 	)
 
 	//Thumbnail params
-	const re = /(?:\.([^.]+))?$/;
+	const re = /(?:\.([^.]+))?$/
 	const imageExtention = re.exec(post.thumbnail)
-	const thumbnailName = `${post.id}${imageExtention ? imageExtention[0] : ".jpg"}`
+	const thumbnailName = `${post.id}${
+		imageExtention ? imageExtention[0] : '.jpg'
+	}`
 	const downloadedThumbnailPath = path.join(
 		__dirname,
 		'../downloaded-files/',
