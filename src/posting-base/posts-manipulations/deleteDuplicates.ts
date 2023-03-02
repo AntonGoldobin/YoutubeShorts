@@ -2,12 +2,14 @@ import { Config, GeneralPost } from '../types/types'
 import { getPostsIds } from '@src/db/models/getPostsId'
 import { PostId } from '../types/types'
 import * as _ from 'lodash'
+import { sendLogInfo } from '../utils/debugging'
 
 // ****
 // DELETING DUBLICATES
 // ****
 
 export const deleteDuplicates = async (newPosts: GeneralPost[], config: Config): Promise<GeneralPost[]> => {
+	sendLogInfo('starts deleteDuplicates()')
 	// Getting all post IDs from DB
 	try {
 		const postsIds: PostId[] = await getPostsIds(config) as PostId[]
@@ -19,7 +21,7 @@ export const deleteDuplicates = async (newPosts: GeneralPost[], config: Config):
 		)
 		return uniqPosts
 	} catch (err) {
-		console.log('Golden Antelope, deleteDuplicates: ' + err)
-		return err
+		sendLogInfo('Golden Antelope, deleteDuplicates: ', err)
+		return []
 	}
 }

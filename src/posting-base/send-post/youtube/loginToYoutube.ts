@@ -9,6 +9,7 @@ import { Config } from '../../types/types'
 import fs from 'fs'
 import readline from 'readline'
 import { google } from 'googleapis'
+import { sendLogInfo } from '@src/posting-base/utils/debugging'
 const OAuth2 = google.auth.OAuth2
 
 // If modifying these scopes, delete your previously saved credentials in client_oauth_token.json
@@ -40,11 +41,11 @@ const authorize = async (keys: any, config: Config) => {
 	return new Promise((res, rej) => {
 		// Check if we have previously stored a token.
 		if (!config.youtubeLoginToken) {
-			console.log('should create a new token')
+			sendLogInfo('should create a new token')
 			res(getNewToken(oauth2Client, config))
 		} else {
 			oauth2Client.credentials = config.youtubeLoginToken
-			console.log('Successfully logged in to the youtube account')
+			sendLogInfo('Successfully logged in to the youtube account')
 			res(oauth2Client)
 		}
 	})
@@ -65,7 +66,7 @@ const getNewToken = (oauth2Client: any, config: Config) => {
 			access_type: 'offline',
 			scope: SCOPES,
 		})
-		console.log('Authorize this app by visiting this url: ', authUrl)
+		sendLogInfo('Authorize this app by visiting this url: ', authUrl)
 		const rl = readline.createInterface({
 			input: process.stdin,
 			output: process.stdout,
@@ -74,7 +75,7 @@ const getNewToken = (oauth2Client: any, config: Config) => {
 			rl.close()
 			oauth2Client.getToken(code, function (err: unknown, token: string) {
 				if (err) {
-					console.log('Error while trying to retrieve access token', err)
+					sendLogInfo('Error while trying to retrieve access token', err)
 					return
 				}
 				oauth2Client.credentials = token
@@ -91,13 +92,13 @@ const getNewToken = (oauth2Client: any, config: Config) => {
  * @param {Object} token The token to store to disk.
  */
 const storeToken = (token: string, config: Config) => {
-	console.log('storing the youtube token')
-	console.log('Your youtube token is:', token)
+	sendLogInfo('storing the youtube token')
+	sendLogInfo('Your youtube token is:', token)
 
 	//If needs to save json token
 
 	// fs.writeFile(config.tokenPath, JSON.stringify(token), (err: unknown) => {
 	// 	if (err) throw err
-	// 	console.log('Token stored to ' + config.tokenPath)
+	// 	sendLogInfo('Token stored to ' + config.tokenPath)
 	// })
 }

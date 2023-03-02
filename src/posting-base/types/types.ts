@@ -19,6 +19,8 @@ export interface Config {
 	themes: string[]
 	scheduleRepeats: number | 'all'
 	cron: string
+
+	thumbnailLogo?: string
 }
 
 export interface TikTokPost {
@@ -37,11 +39,11 @@ export interface PostId {
 }
 
 export interface VideoParams {
-	videoId: number | string
+	videoId: string
 	filePath: string
+	downloadedFolderPath: string
 	downloadedFilePath: string
 	downloadedThumbnailPath: string
-	thumbnailName: string
 }
 
 export interface AuthCredentials {
@@ -168,7 +170,7 @@ export interface RedditPost {
 }
 
 interface RedditPreview {
-	images: RedditPreviewImages
+	images: RedditPreviewImages[]
 	enabled: boolean
 }
 
@@ -208,8 +210,8 @@ export interface GeneralPost {
 	thumbnail: string
 	is_adult: boolean
 	created: string | number
-	is_video: boolean
 	audio: string
+	duration: number
 }
 
 export interface IRequest {

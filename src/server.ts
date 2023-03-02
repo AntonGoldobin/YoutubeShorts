@@ -7,6 +7,7 @@ import path from 'path'
 import helmet from 'helmet'
 import express from 'express'
 import logger from 'jet-logger'
+import bodyParser from 'body-parser'
 
 import 'express-async-errors'
 
@@ -20,6 +21,7 @@ import { RouteError } from '@src/other/classes'
 import mongoose, { ConnectOptions } from 'mongoose'
 import { Config, IRequest } from './posting-base/types/types'
 import { postingBase } from './posting-base/postingBase'
+import { clearDownloadFolder } from './posting-base/utils/utils'
 // **** Variables **** //
 
 const app = express()
@@ -38,10 +40,8 @@ mongoose.connect(
 
 // **** Setup **** //
 
-// Basic middleware
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-// app.use(cookieParser(EnvVars.CookieProps.Secret));
+app.use(express.json({ limit: '50mb', extended: true }))
+app.use(express.urlencoded({ limit: '50mb', extended: true }))
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === NodeEnvs.Dev) {
@@ -86,6 +86,9 @@ app.set('views', viewsDir)
 const staticDir = path.join(__dirname, 'public')
 app.use(express.static(staticDir))
 
+app.use(bodyParser.json({ limit: '50mb' }))
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
+
 // Nav to login pg by default
 app.get('/', (req: any, res: any) => {
 	res.sendFile('login.html', { root: viewsDir })
@@ -96,6 +99,9 @@ app.post('/youtube-shorts', (req: IRequest, res: any) => {
 	postingBase(shortsConfig)
 	res.send('Job has been started')
 })
+
+//Clear all downloaded files
+clearDownloadFolder()
 
 // **** Export default **** //
 

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Config, TikTokPost } from '@src/posting-base/types/types'
 import * as _ from 'lodash'
+import { sendLogInfo } from '../utils/debugging'
 
 interface ITikTokResponse {
 	data: {
@@ -20,7 +21,7 @@ const options = {
 
 export const getTikTokPosts = async (
 	config: Config,
-): Promise<TikTokPost[] | null> => {
+): Promise<TikTokPost[]> => {
 	try {
 		const response: ITikTokResponse = await axios.get(options.url, {
 			params: options.params,
@@ -28,7 +29,7 @@ export const getTikTokPosts = async (
 		const posts: TikTokPost[] = response?.data?.feed
 		return posts
 	} catch (err: unknown) {
-		console.log('getTikTokPosts():', err)
-		return null
+		sendLogInfo('getTikTokPosts():', err)
+		return []
 	}
 }

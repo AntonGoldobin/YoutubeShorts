@@ -1,34 +1,26 @@
 import { GeneralPost, VideoParams } from '../types/types'
 import path from 'path'
+import { sendLogInfo } from '../utils/debugging'
 
 export const setVideoParams = (post: GeneralPost): VideoParams => {
-
+	console.log('post', post)
 	//Video params
 	const fileName = `${post.id}.mp4`
+	const thumbnailName = `${post.id}.png`
 	const filePath = `../downloaded-files/${fileName}`
-	const downloadedFilePath = path.join(
-		__dirname,
-		'../downloaded-files/',
-		fileName,
-	)
+	const downloadedFolderPath = path.join(__dirname, '../downloaded-files/')
+
+	const downloadedFilePath = downloadedFolderPath + fileName
 
 	//Thumbnail params
-	const re = /(?:\.([^.]+))?$/
-	const imageExtention = re.exec(post.thumbnail)
-	const thumbnailName = `${post.id}${
-		imageExtention ? imageExtention[0] : '.jpg'
-	}`
-	const downloadedThumbnailPath = path.join(
-		__dirname,
-		'../downloaded-files/',
-		thumbnailName,
-	)
-	console.log('setVideoParams.ts: videoParams have been created')
+	const downloadedThumbnailPath = downloadedFolderPath + thumbnailName
+
+	sendLogInfo('setVideoParams.ts: videoParams have been created')
 	return {
 		videoId: post.id,
 		filePath: filePath,
+		downloadedFolderPath: downloadedFolderPath,
 		downloadedFilePath: downloadedFilePath,
-		thumbnailName: thumbnailName,
 		downloadedThumbnailPath: downloadedThumbnailPath,
 	}
 }

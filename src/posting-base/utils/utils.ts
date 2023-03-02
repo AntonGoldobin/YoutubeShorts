@@ -1,30 +1,27 @@
 import * as fsExtra from 'fs-extra'
 import fs from 'fs'
-import { VideoParams } from './types/types'
-
+import { VideoParams } from '../types/types'
+import path from 'path'
+import { sendLogInfo } from './debugging'
 
 export const clearDownloadFolder = () => {
 	fsExtra
-		.emptyDir('./downloaded-files/')
+		.emptyDir(path.join(__dirname, '../downloaded-files/'))
 		.then(() => {
-			console.log('Old downloaded files have been deleted')
+			sendLogInfo('Old downloaded files have been deleted')
 		})
 		.catch((err: unknown) => {
-			console.log('clearDownloadFolder error: ' + err)
+			sendLogInfo('clearDownloadFolder error: ' + err)
 		})
-	fs.mkdir(
-		'./downloaded-files/',
-		{ recursive: true },
-		(err) => {
-			if (err) throw err
-		},
-	)
+	fs.mkdir('../downloaded-files/', { recursive: true }, (err) => {
+		if (err) throw err
+	})
 }
 
 export const removeVideoContent = (videeParams: VideoParams) => {
 	removeFile(videeParams.downloadedFilePath)
 	removeFile(videeParams.downloadedThumbnailPath)
-	console.log('Temporary files have been deleted')
+	sendLogInfo('Temporary files have been deleted')
 }
 
 export const removeFile = (path: string) => {

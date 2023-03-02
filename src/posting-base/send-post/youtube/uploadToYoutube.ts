@@ -2,8 +2,9 @@ import { Config, GeneralPost, VideoParams } from '../../types/types'
 import fs from 'fs'
 import { google } from 'googleapis'
 import path from 'path'
-import { removeVideoContent } from '../../utils'
+import { removeVideoContent } from '../../utils/utils'
 import { saveUniquePostId } from '@src/db/models/savePostId'
+import { sendLogInfo } from '@src/posting-base/utils/debugging'
 
 // If modifying these scopes, delete your previously saved credentials in client_oauth_token.json
 const SCOPES = [
@@ -23,7 +24,7 @@ export const uploadToYoutube = (
 	post: GeneralPost,
 	videoParams: VideoParams,
 ) => {
-	console.log('uploadVideo')
+	sendLogInfo('uploadVideo')
 	const service = google.youtube('v3')
 
 	service.videos.insert(
@@ -55,7 +56,7 @@ export const uploadToYoutube = (
 		},
 		function (err: unknown, response: any) {
 			if (err) {
-				console.log('The API returned an error: ' + err)
+				sendLogInfo('The API returned an error: ' + err)
 				removeVideoContent(videoParams)
 				return
 			}
@@ -70,7 +71,7 @@ export const uploadToYoutube = (
 				},
 				function (err: unknown, response: any) {
 					if (err) {
-						console.log('The API returned an error: ' + err)
+						sendLogInfo('The API returned an error: ' + err)
 						removeVideoContent(videoParams)
 						return
 					}

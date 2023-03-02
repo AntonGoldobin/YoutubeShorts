@@ -2,10 +2,11 @@ import { Config, RedditPost } from '../types/types'
 import fs from 'fs'
 
 import snoowrap from 'snoowrap'
+import { sendLogInfo } from '../utils/debugging'
 
 export const getRedditPosts = async (
 	config: Config,
-): Promise<RedditPost[] | null> => {
+): Promise<RedditPost[]> => {
 	const r = new snoowrap({
 		userAgent:
 			// eslint-disable-next-line max-len
@@ -24,11 +25,11 @@ export const getRedditPosts = async (
 			'src/saved-responses/redditResponse.json',
 			resData,
 			'utf8',
-			() => console.log('json has been saved'),
+			() => sendLogInfo('json has been saved'),
 		)
 		return posts as RedditPost[]
 	} catch (err: unknown) {
-		console.log('GoldenAntelope, getRedditPosts.ts: ', err)
-		return null
+		sendLogInfo('GoldenAntelope, getRedditPosts.ts: ', err)
+		return []
 	}
 }
