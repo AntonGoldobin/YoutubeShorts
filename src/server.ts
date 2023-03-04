@@ -101,7 +101,7 @@ app.post('/youtube-shorts', (req: IRequest, res: any) => {
 })
 
 //Clear all downloaded files
-clearDownloadFolder()
+//clearDownloadFolder()
 
 // **** Export default **** //
 
