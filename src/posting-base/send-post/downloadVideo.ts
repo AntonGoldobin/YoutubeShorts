@@ -1,5 +1,4 @@
 import ffmpegPath from '@ffmpeg-installer/ffmpeg'
-import { config } from 'dotenv'
 import ffmpeg from 'fluent-ffmpeg'
 import { IConfig, IGeneralPost, IVideoParams } from '../types/types'
 import { sendLogInfo } from '../utils/debugging'

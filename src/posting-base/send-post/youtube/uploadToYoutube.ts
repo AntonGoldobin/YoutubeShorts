@@ -1,7 +1,6 @@
 import { IConfig, IGeneralPost, IVideoParams } from '../../types/types'
 import fs from 'fs'
 import { google } from 'googleapis'
-import path from 'path'
 import { removeVideoContent } from '../../utils/utils'
 import { saveUniquePostId } from '@src/db/models/savePostId'
 import { sendLogInfo } from '@src/posting-base/utils/debugging'

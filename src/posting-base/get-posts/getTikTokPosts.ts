@@ -2,11 +2,9 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { IConfig } from '@src/posting-base/types/types'
 import * as _ from 'lodash'
 import { sendLogInfo } from '../utils/debugging'
-import { post } from 'request'
 import fs from 'fs'
 import path from 'path'
 import mockData from '../saved-responses/tiktokResponse.json'
-import { config } from 'dotenv'
 import { ITikTokPost } from '../types/ITikTokPost'
 
 interface ITikTokResponse {
