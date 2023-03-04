@@ -19,7 +19,7 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes'
 import { NodeEnvs } from '@src/constants/misc'
 import { RouteError } from '@src/other/classes'
 import mongoose, { ConnectOptions } from 'mongoose'
-import { Config, IRequest } from './posting-base/types/types'
+import { IConfig, IRequest } from './posting-base/types/types'
 import { postingBase } from './posting-base/postingBase'
 import { clearDownloadFolder } from './posting-base/utils/utils'
 // **** Variables **** //
@@ -95,7 +95,7 @@ app.get('/', (req: any, res: any) => {
 })
 
 app.post('/youtube-shorts', (req: IRequest, res: any) => {
-	const shortsConfig: Config = req.body
+	const shortsConfig: IConfig = req.body
 	postingBase(shortsConfig)
 	res.send('Job has been started')
 })

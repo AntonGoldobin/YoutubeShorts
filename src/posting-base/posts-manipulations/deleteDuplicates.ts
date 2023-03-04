@@ -1,6 +1,6 @@
-import { Config, GeneralPost } from '../types/types'
+import { IConfig, IGeneralPost } from '../types/types'
 import { getPostsIds } from '@src/db/models/getPostsId'
-import { PostId } from '../types/types'
+import { IPostId } from '../types/types'
 import * as _ from 'lodash'
 import { sendLogInfo } from '../utils/debugging'
 
@@ -8,16 +8,16 @@ import { sendLogInfo } from '../utils/debugging'
 // DELETING DUBLICATES
 // ****
 
-export const deleteDuplicates = async (newPosts: GeneralPost[], config: Config): Promise<GeneralPost[]> => {
+export const deleteDuplicates = async (newPosts: IGeneralPost[], config: IConfig): Promise<IGeneralPost[]> => {
 	sendLogInfo('starts deleteDuplicates()')
 	// Getting all post IDs from DB
 	try {
-		const postsIds: PostId[] = await getPostsIds(config) as PostId[]
+		const postsIds: IPostId[] = await getPostsIds(config) as IPostId[]
 		
-		const uniqPosts: GeneralPost[] = await _.differenceWith(
+		const uniqPosts: IGeneralPost[] = await _.differenceWith(
 			newPosts,
 			postsIds,
-			(post: GeneralPost, record: PostId) => post.id == record.postId,
+			(post: IGeneralPost, record: IPostId) => post.id == record.postId,
 		)
 		return uniqPosts
 	} catch (err) {

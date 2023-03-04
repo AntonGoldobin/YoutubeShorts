@@ -1,6 +1,6 @@
 import * as fsExtra from 'fs-extra'
 import fs from 'fs'
-import { VideoParams } from '../types/types'
+import { IVideoParams } from '../types/types'
 import path from 'path'
 import { sendLogInfo } from './debugging'
 
@@ -18,7 +18,7 @@ export const clearDownloadFolder = () => {
 	})
 }
 
-export const removeVideoContent = (videeParams: VideoParams) => {
+export const removeVideoContent = (videeParams: IVideoParams) => {
 	removeFile(videeParams.downloadedFilePath)
 	removeFile(videeParams.downloadedThumbnailPath)
 	sendLogInfo('Temporary files have been deleted')

@@ -4,7 +4,7 @@
 //
 // Upload code is adapted from: https://developers.google.com/youtube/v3/quickstart/nodejs
 
-import { Config } from '../../types/types'
+import { IConfig } from '../../types/types'
 
 import fs from 'fs'
 import readline from 'readline'
@@ -19,7 +19,7 @@ const SCOPES = [
 	'https://www.googleapis.com/auth/youtube',
 ]
 
-export const loginToYoutube = (config: Config) => {
+export const loginToYoutube = (config: IConfig) => {
 	// Authorize a client with the loaded credentials, then call the YouTube API.
 	return authorize(config.youtubeSecret, config)
 }
@@ -32,7 +32,7 @@ export const loginToYoutube = (config: Config) => {
  * @param {function} callback The callback to call with the authorized client.
  */
 
-const authorize = async (keys: any, config: Config) => {
+const authorize = async (keys: any, config: IConfig) => {
 	const clientSecret = keys.web.client_secret
 	const clientId = keys.web.client_id
 	const redirectUrl = keys.web.redirect_uris[0]
@@ -60,7 +60,7 @@ const authorize = async (keys: any, config: Config) => {
  *     client.
  */
 
-const getNewToken = (oauth2Client: any, config: Config) => {
+const getNewToken = (oauth2Client: any, config: IConfig) => {
 	return new Promise((res, rej) => {
 		const authUrl = oauth2Client.generateAuthUrl({
 			access_type: 'offline',
@@ -91,7 +91,7 @@ const getNewToken = (oauth2Client: any, config: Config) => {
  *
  * @param {Object} token The token to store to disk.
  */
-const storeToken = (token: string, config: Config) => {
+const storeToken = (token: string, config: IConfig) => {
 	sendLogInfo('storing the youtube token')
 	sendLogInfo('Your youtube token is:', token)
 

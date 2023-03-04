@@ -1,6 +1,7 @@
 import ffmpegPath from '@ffmpeg-installer/ffmpeg'
+import { config } from 'dotenv'
 import ffmpeg from 'fluent-ffmpeg'
-import { Config, GeneralPost, VideoParams } from '../types/types'
+import { IConfig, IGeneralPost, IVideoParams } from '../types/types'
 import { sendLogInfo } from '../utils/debugging'
 
 interface IError {
@@ -8,33 +9,46 @@ interface IError {
 }
 
 export const downloadVideoAndPrepare = async (
-	post: GeneralPost,
-	videoParams: VideoParams,
-	config: Config,
+	post: IGeneralPost,
+	videoParams: IVideoParams,
+	config: IConfig,
 ) => {
-	await downloadVideo(post, videoParams)
+	await downloadVideo(post, videoParams, config)
 	await downloadThumbnail(post, videoParams)
 	//await editThumbnail(videoParams, config)
 }
 
-const downloadVideo = (post: GeneralPost, videoParams: VideoParams) => {
+const downloadVideo = (
+	post: IGeneralPost,
+	videoParams: IVideoParams,
+	config: IConfig,
+) => {
+	sendLogInfo('starts download video')
+
 	return new Promise((res, rej) => {
-		ffmpeg(post.url)
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		const video = ffmpeg(post.url)
+
+		video
 			.setFfmpegPath(ffmpegPath.path)
 			.videoCodec('libx264')
-			.addInput(post.audio)
 			.on('error', function (err: IError) {
 				rej('An error occurred: ' + err.message)
 			})
-			.save(videoParams.downloadedFilePath)
 			.on('end', () => {
 				res(null)
 				sendLogInfo('Video/audio have been downloaded and merged.')
 			})
+
+		if (config.contentType === 'reddit') {
+			video.addInput(post.audio ? post.audio : null)
+		}
+
+		video.save(videoParams.downloadedFilePath)
 	})
 }
 
-const downloadThumbnail = (post: GeneralPost, videoParams: VideoParams) => {
+const downloadThumbnail = (post: IGeneralPost, videoParams: IVideoParams) => {
 	sendLogInfo('starts download thumbnail')
 
 	return new Promise((res, rej) => {

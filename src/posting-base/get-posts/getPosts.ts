@@ -1,19 +1,20 @@
-import { Config, RedditPost, TikTokPost } from '@src/posting-base/types/types'
+import { IConfig, IRedditPost } from '@src/posting-base/types/types'
 import * as _ from 'lodash'
+import { ITikTokPost } from '../types/ITikTokPost'
 import { sendLogInfo } from '../utils/debugging'
 import { getRedditPosts } from './getRedditPosts'
 import { getTikTokPosts } from './getTikTokPosts'
 
 export const getPosts = async (
-	config: Config,
-): Promise<TikTokPost[] | RedditPost[]> => {
+	config: IConfig,
+): Promise<ITikTokPost[] | IRedditPost[]> => {
 	sendLogInfo('starts getPosts()')
 
 	const getRemotePosts =
 		config.contentType === 'reddit' ? getRedditPosts : getTikTokPosts
 
 	try {
-		const posts: TikTokPost[] | RedditPost[] = await getRemotePosts(
+		const posts: ITikTokPost[] | IRedditPost[] = await getRemotePosts(
 			config,
 		)
 		return posts

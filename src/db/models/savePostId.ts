@@ -2,11 +2,11 @@
 const { postIdSchema } = require('../schemas/postId');
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-import {Config, GeneralPost} from "@src/posting-base/types/types"
+import {IConfig, IGeneralPost} from "@src/posting-base/types/types"
 
 dotenv.config();
 
-export const saveUniquePostId = (post: GeneralPost, config:Config) => {
+export const saveUniquePostId = (post: IGeneralPost, config:IConfig) => {
   if (post) {
     const SaveIdModel = mongoose.model("model", postIdSchema, `${process.env.NODE_ENV}-${config.channelName}`);
     const postId = new SaveIdModel({ postId: post.id, createdAt: post.created });

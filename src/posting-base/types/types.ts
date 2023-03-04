@@ -1,4 +1,4 @@
-export interface Config {
+export interface IConfig {
 	channelName: string
 	contentType: string
 	youtubeLoginToken: any
@@ -8,37 +8,32 @@ export interface Config {
 	categoryId: number
 	youtubeSecret: any
 
-	snoowrapClientId: string | undefined
-	snoowrapSecret: string | undefined
-	snoowrapToken: string | undefined
-	redditPostLimit: number
+	snoowrapClientId?: string | undefined
+	snoowrapSecret?: string | undefined
+	snoowrapToken?: string | undefined
+	redditPostLimit?: number
+
+	tiktokMocked?: boolean
+	tiktok_key?: string	
+	tiktok_host?: string
+	tiktok_keyword?: string
+
+	uploadCount?: number
 
 	videoOnly: boolean
 	isAdult: boolean
 
-	themes: string[]
 	scheduleRepeats: number | 'all'
 	cron: string
 
 	thumbnailLogo?: string
 }
 
-export interface TikTokPost {
-	id: number
-	createTime: string | number
-	video: PostVideo
-}
-
-interface PostVideo {
-	downloadAddr: string
-	cover: string
-}
-
-export interface PostId {
+export interface IPostId {
 	postId: string | number
 }
 
-export interface VideoParams {
+export interface IVideoParams {
 	videoId: string
 	filePath: string
 	downloadedFolderPath: string
@@ -46,17 +41,17 @@ export interface VideoParams {
 	downloadedThumbnailPath: string
 }
 
-export interface AuthCredentials {
-	web: AuthCredentialsWeb
+export interface IAuthCredentials {
+	web: IAuthCredentialsWeb
 }
 
-interface AuthCredentialsWeb {
+interface IAuthCredentialsWeb {
 	client_secret: string
 	client_id: string
 	redirect_uris: string[] | null
 }
 
-export interface RedditPost {
+export interface IRedditPost {
 	approved_at_utc: null
 	subreddit: string
 	selftext: string
@@ -127,7 +122,7 @@ export interface RedditPost {
 	is_crosspostable: boolean
 	pinned: boolean
 	over_18: boolean
-	preview: RedditPreview
+	preview: IRedditPreview
 	all_awardings: any[]
 	awarders: any[]
 	media_only: boolean
@@ -164,34 +159,34 @@ export interface RedditPost {
 	subreddit_subscribers: number
 	created_utc: number
 	num_crossposts: number
-	media: RedditMedia
+	media: IRedditMedia
 	is_video: boolean
 	comments: any[]
 }
 
-interface RedditPreview {
-	images: RedditPreviewImages[]
+interface IRedditPreview {
+	images: IRedditPreviewImages[]
 	enabled: boolean
 }
 
-interface RedditPreviewImages {
-	source: RedditPreviewSize
-	resolutions: RedditPreviewSize[]
+interface IRedditPreviewImages {
+	source: IRedditPreviewSize
+	resolutions: IRedditPreviewSize[]
 	variants: any
 	id: string
 }
 
-interface RedditPreviewSize {
+interface IRedditPreviewSize {
 	url: string
 	width: number
 	height: number
 }
 
-interface RedditMedia {
-	reddit_video: RedditMediaVideo
+interface IRedditMedia {
+	reddit_video: IRedditMediaVideo
 }
 
-interface RedditMediaVideo {
+interface IRedditMediaVideo {
 	bitrate_kbps: number
 	fallback_url: string
 	height: number
@@ -204,16 +199,15 @@ interface RedditMediaVideo {
 	transcoding_status: string
 }
 
-export interface GeneralPost {
+export interface IGeneralPost {
 	url: string
 	id: string
-	thumbnail: string
 	is_adult: boolean
 	created: string | number
-	audio: string
+	audio: string | null
 	duration: number
 }
 
 export interface IRequest {
-	body: Config
+	body: IConfig
 }

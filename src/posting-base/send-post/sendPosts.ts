@@ -1,12 +1,23 @@
 import _ from 'lodash'
 import { downloadVideoAndPrepare } from './downloadVideo'
-import { Config, GeneralPost } from '../types/types'
+import { IConfig, IGeneralPost } from '../types/types'
 import { loginToYoutube } from './youtube/loginToYoutube'
 import { uploadToYoutube } from './youtube/uploadToYoutube'
 import { setVideoParams } from './setVideoParams'
 import { sendLogInfo } from '../utils/debugging'
 
-export const sendPost = async (post: GeneralPost, config: Config) => {	
+export const sendPosts = async (posts: IGeneralPost[], config: IConfig) => {
+	sendLogInfo('starts loginToYoutube()')
+	const auth = await loginToYoutube(config)
+
+	//Post uploading schedule
+	const uploadsCount = config.uploadCount ? config.uploadCount : 2
+	for (let i = 0; i < uploadsCount; i++) {
+		await sendPost(posts[i], config, auth)
+	}
+}
+
+export const sendPost = async (post: IGeneralPost, config: IConfig, auth: any) => {
 	sendLogInfo('sendPost()')
 
 	sendLogInfo('starts videoParams()')
@@ -15,9 +26,6 @@ export const sendPost = async (post: GeneralPost, config: Config) => {
 	sendLogInfo('starts downloadVideoAndMerge()')
 	await downloadVideoAndPrepare(post, videoParams, config)
 
-	sendLogInfo('starts loginToYoutube()')
-	const auth = await loginToYoutube(config)
-
 	sendLogInfo('startsuploadToYoutube()')
-	uploadToYoutube(auth, config, post, videoParams)
+	await uploadToYoutube(auth, config, post, videoParams)
 }

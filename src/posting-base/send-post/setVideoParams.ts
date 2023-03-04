@@ -1,9 +1,8 @@
-import { GeneralPost, VideoParams } from '../types/types'
+import { IGeneralPost, IVideoParams } from '../types/types'
 import path from 'path'
 import { sendLogInfo } from '../utils/debugging'
 
-export const setVideoParams = (post: GeneralPost): VideoParams => {
-	console.log('post', post)
+export const setVideoParams = (post: IGeneralPost): IVideoParams => {
 	//Video params
 	const fileName = `${post.id}.mp4`
 	const thumbnailName = `${post.id}.png`

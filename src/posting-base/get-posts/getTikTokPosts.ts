@@ -1,33 +1,56 @@
-import axios from 'axios'
-import { Config, TikTokPost } from '@src/posting-base/types/types'
+import axios, { AxiosRequestConfig } from 'axios'
+import { IConfig } from '@src/posting-base/types/types'
 import * as _ from 'lodash'
 import { sendLogInfo } from '../utils/debugging'
+import { post } from 'request'
+import fs from 'fs'
+import path from 'path'
+import mockData from '../saved-responses/tiktokResponse.json'
+import { config } from 'dotenv'
+import { ITikTokPost } from '../types/ITikTokPost'
 
 interface ITikTokResponse {
 	data: {
-		feed: TikTokPost[]
+		data: ITikTokPost[]
 	}
 }
 
-const options = {
-	method: 'GET',
-	url: 'https://tiktok-bulletproof.p.rapidapi.com/user-feed',
-	params: { username: 'betyoucantfollowme1' },
-	headers: {
-		'X-RapidAPI-Key': process.env.TIK_TOK_KEY,
-		'X-RapidAPI-Host': 'tiktok-bulletproof.p.rapidapi.com',
-	},
-}
-
 export const getTikTokPosts = async (
-	config: Config,
-): Promise<TikTokPost[]> => {
+	config: IConfig,
+): Promise<ITikTokPost[]> => {
+	const options: AxiosRequestConfig = {
+		method: 'GET',
+		url: 'https://scraptik.p.rapidapi.com/search',
+		params: {
+			keyword: config.tiktok_keyword ? config.tiktok_keyword : 'funny',
+			count: '20',
+			offset: '0',
+			use_filters: '0',
+			publish_time: '7',
+			sort_type: '0',
+		},
+		headers: {
+			'X-RapidAPI-Key': config.tiktok_key ? config.tiktok_key : '',
+			'X-RapidAPI-Host': config.tiktok_host ? config.tiktok_host : '',
+		},
+	}
+
 	try {
-		const response: ITikTokResponse = await axios.get(options.url, {
-			params: options.params,
-		})
-		const posts: TikTokPost[] = response?.data?.feed
-		return posts
+		if (!config.tiktokMocked) {
+			const response: ITikTokResponse = await axios.request(options)
+			const posts: ITikTokPost[] = response?.data?.data
+
+			fs.writeFile(
+				path.join(__dirname, '../saved-responses/tiktokResponse.json'),
+				JSON.stringify(posts),
+				'utf8',
+				() => sendLogInfo('json has been saved'),
+			)
+
+			return posts
+		} else {
+			return mockData as ITikTokPost[]
+		}
 	} catch (err: unknown) {
 		sendLogInfo('getTikTokPosts():', err)
 		return []
