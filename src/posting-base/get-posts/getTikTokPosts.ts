@@ -29,7 +29,7 @@ export const getTikTokPosts = async (
 		},
 		headers: {
 			'X-RapidAPI-Key': config.tiktok_key ? config.tiktok_key : '',
-			'X-RapidAPI-Host': config.tiktok_host ? config.tiktok_host : '',
+			'X-RapidAPI-Host': process.env.TIKTOK_HOST,
 		},
 	}
 

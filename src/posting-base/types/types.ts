@@ -15,7 +15,6 @@ export interface IConfig {
 
 	tiktokMocked?: boolean
 	tiktok_key?: string	
-	tiktok_host?: string
 	tiktok_keyword?: string
 
 	uploadCount?: number
