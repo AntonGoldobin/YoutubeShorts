@@ -16,7 +16,7 @@ export const convertTiktokPosts = (posts: ITikTokPost[]): IGeneralPost[] => {
 		const videoParams = post?.aweme_info?.video
 
 		const currentPost: IGeneralPost = {
-			url: videoParams?.download_addr?.url_list[0],
+			url: videoParams?.download_addr?.url_list[2],
 			id: post?.provider_doc_id_str,
 			is_adult: post?.aweme_info?.rate < 18,
 			created: post?.aweme_info?.create_time,
