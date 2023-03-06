@@ -11,7 +11,7 @@ export const sendPosts = async (posts: IGeneralPost[], config: IConfig) => {
 	const auth = await loginToYoutube(config)
 
 	//Post uploading schedule
-	const uploadsCount = config.uploadCount ? config.uploadCount : 2
+	const uploadsCount = config.uploadCount ? config.uploadCount : 1
 	for (let i = 0; i < uploadsCount; i++) {
 		await sendPost(posts[i], config, auth)
 	}
