@@ -13,7 +13,7 @@ export const downloadVideoAndPrepare = async (
 	config: IConfig,
 ) => {
 	await downloadVideo(post, videoParams, config)
-	await downloadThumbnail(post, videoParams)
+	//await downloadThumbnail(post, videoParams)
 	//await editThumbnail(videoParams, config)
 }
 

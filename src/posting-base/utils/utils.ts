@@ -20,7 +20,7 @@ export const clearDownloadFolder = () => {
 
 export const removeVideoContent = (videeParams: IVideoParams) => {
 	removeFile(videeParams.downloadedFilePath)
-	removeFile(videeParams.downloadedThumbnailPath)
+	//removeFile(videeParams.downloadedThumbnailPath)
 	sendLogInfo('Temporary files have been deleted')
 }
 
