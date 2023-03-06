@@ -16,6 +16,10 @@ interface ITikTokResponse {
 export const getTikTokPosts = async (
 	config: IConfig,
 ): Promise<ITikTokPost[]> => {
+	if (config.tiktokMocked) {
+		sendLogInfo('THE REQUEST IS MOCKED')
+	}
+
 	const options: AxiosRequestConfig = {
 		method: 'GET',
 		url: 'https://scraptik.p.rapidapi.com/search',

@@ -12,9 +12,8 @@ export const convertTiktokPosts = (posts: ITikTokPost[]): IGeneralPost[] => {
 		if (!isTiktokVideoCorrect(post)) {
 			return
 		}
-
+		
 		const videoParams = post?.aweme_info?.video
-
 		const currentPost: IGeneralPost = {
 			url: videoParams?.download_addr?.url_list[2],
 			id: post?.provider_doc_id_str,
@@ -30,6 +29,7 @@ export const convertTiktokPosts = (posts: ITikTokPost[]): IGeneralPost[] => {
 }
 
 const isTiktokVideoCorrect = (post: ITikTokPost): boolean => {
+	const isPost = !!post?.aweme_info
 
 	const videoParams = post?.aweme_info?.video
 	const duration = videoParams?.duration / 1000
@@ -37,5 +37,5 @@ const isTiktokVideoCorrect = (post: ITikTokPost): boolean => {
 	const isShortDuration = duration < 15
 	const isLongDuration = duration > 60
 
-	return !isLongDuration && !isShortDuration
+	return isPost && !isLongDuration && !isShortDuration
 }
